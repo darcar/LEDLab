@@ -20,28 +20,43 @@ void setup()  {
   pinMode(led, OUTPUT);
   pinMode(upbutt, INPUT);
   pinMode(downbutt, INPUT);
+  
+  Serial.begin(9600);
 } 
 
 // the loop routine runs over and over again forever:
 void loop()  { 
   
+  // call read button function
   output = read_buttons();
-  
-  
-  
-  
-  // set the brightness of pin 9:
-  analogWrite(led, brightness);    
+  Serial.println(output);   
   
   // change the brightness for next time through the loop:
-  brightness = brightness + output*fadeAmount;
+  if (brightness >= 5) {
+    brightness = brightness + output*fadeAmount;
+    Serial.println(brightness);
+  }
 
-  // reverse the direction of the fading at the ends of the fade: 
-  if (brightness == 0 || brightness == 255) {
-    fadeAmount = -fadeAmount ; 
-  }     
+  // set the brightness of pin 9:
+  analogWrite(led, brightness); 
+  
+  // case
+  
+  while (brightness >= 255) {
+     flashing();
+     delay(5);
+  }
+  
+  
   // wait for 30 milliseconds to see the dimming effect    
   delay(30);                            
+}
+
+void flashing() {
+  digitalWrite(led, HIGH);
+  delay(500);
+  digitalWrite(led, LOW); 
+  delay(500);
 }
 
 

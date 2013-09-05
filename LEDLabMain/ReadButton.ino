@@ -1,7 +1,7 @@
 int read_buttons()
 {
-  upval = digitalRead(upbutt);
-  downval = digitalRead(downbutt);
+  int upval = digitalRead(upbutt);
+  int downval = digitalRead(downbutt);
   
   if (upval == HIGH) {
      output = 1;
