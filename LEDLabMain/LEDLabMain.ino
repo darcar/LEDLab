@@ -9,6 +9,8 @@ int downbutt = 2;      // decrease brightness button
 float brightness = 0;    // how bright the LED is
 float fadeAmount = 0.25;    // how many points to fade the LED by
 int output;
+boolean first = true;
+
 
 // the setup routine runs once when you press reset:
 void setup()  { 
@@ -24,7 +26,12 @@ void setup()  {
 void loop()  { 
   
   // call read button function
-  output = read_buttons(brightness);  
+  output = read_buttons(brightness);
+
+  if (output == 1 && first == true) {  // checks for first upbutton push
+     t0 = millis();                    // saves first time point
+     first = false;
+  }
   
   // adjust brightness. output = 1 if up button, 
   // output = -1 if down button, output = 0 if both or no buttons
@@ -35,7 +42,13 @@ void loop()  {
   
   // stuck in while loop once max brightness level was reached
   while (brightness >= 255) {
-     flashing();    // call flashing function bc max val has been reached
+    if (brightness == 255) {
+      tend = millis();         // saves final time point
+      brightness += 1;         // logic to save a value to tend just once
+      Serial.println(tend-t0)  // print total time to reach max brightness
+    }
+    flashing();    // call flashing function bc max val has been reached
+
   }
   
   // wait for 30 milliseconds to see the dimming effect    
