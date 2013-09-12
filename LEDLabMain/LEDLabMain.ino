@@ -7,10 +7,10 @@ int led = 9;           // the pin that the LED is attached to
 int upbutt = 4;        // increase brightness button
 int downbutt = 2;      // decrease brightness button
 float brightness = 0;    // how bright the LED is
-float fadeAmount = 0.25;    // how many points to fade the LED by
+float fadeAmount = 0.255;    // how many points to fade the LED by
 int output;
 boolean first = true;
-
+float t0;
 
 // the setup routine runs once when you press reset:
 void setup()  { 
@@ -42,10 +42,10 @@ void loop()  {
   
   // stuck in while loop once max brightness level was reached
   while (brightness >= 255) {
-    if (brightness == 255) {
-      tend = millis();         // saves final time point
-      brightness += 1;         // logic to save a value to tend just once
-      Serial.println(tend-t0)  // print total time to reach max brightness
+    if (first == false) {
+      float tend = millis();         // saves final time point
+      Serial.println(tend-t0);  // print total time to reach max brightness
+      first = true;            // logic, so if statement is only run once
     }
     flashing();    // call flashing function bc max val has been reached
 
